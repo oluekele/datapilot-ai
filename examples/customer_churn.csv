@@ -1,0 +1,404 @@
+Customer ID,City,Plan,Tenure (months),Monthly charge,Support tickets,Satisfaction score,Region code,Churned
+C0000,Port Harcourt,basic,57,18.32,2,8.1,NG,0
+C0001,Abuja,standard,38,42.98,2,7.2,NG,0
+C0002,Ibadan,basic,12,23.27,3,2.7,NG,1
+C0003,Abuja,basic,54,18.52,1,8.3,NG,0
+C0004,Kano,basic,37,29.26,1,4.8,NG,1
+C0005,Abuja,standard,37,950.0,2,9.1,NG,0
+C0006,Port Harcourt,premium,61,72.59,2,7.1,NG,0
+C0007,Lagos,basic,29,28.46,3,6.4,NG,1
+C0008,Kano,standard,4,42.45,1,8.6,NG,1
+C0009,Lagos,basic,58,28.52,4,5.3,NG,0
+C0010,Abuja,premium,15,85.28,1,,NG,0
+C0011,Ibadan,premium,37,71.85,0,,NG,0
+C0012,Abuja,standard,31,41.34,2,6.9,NG,0
+C0013,Abuja,standard,65,45.3,5,5.1,NG,0
+C0014,Ibadan,standard,2,43.68,0,8.3,NG,0
+C0015,Ibadan,premium,17,81.82,2,2.8,NG,0
+C0016,Ibadan,basic,27,16.33,3,6.1,NG,0
+C0017,Lagos,basic,43,19.49,4,3.7,NG,0
+C0018,Abuja,basic,16,26.01,4,8.9,NG,0
+C0019,Ibadan,basic,46,28.0,4,6.5,NG,0
+C0020,Port Harcourt,standard,13,40.26,1,8.5,NG,0
+C0021,Abuja,,65,18.61,3,6.8,NG,0
+C0022,Abuja,standard,67,44.24,0,,NG,0
+C0023,Port Harcourt,basic,7,11.9,1,6.3,NG,0
+C0024,Lagos,,44,25.63,6,,NG,1
+C0025,Port Harcourt,basic,58,23.39,3,7.2,NG,0
+C0026,Abuja,basic,26,23.13,2,7.0,NG,0
+C0027,Ibadan,standard,49,44.34,0,8.9,NG,0
+C0028,Kano,basic,57,25.22,4,6.9,NG,1
+C0029,Abuja,basic,62,25.78,8,3.2,NG,1
+C0030,Abuja,basic,42,26.96,5,3.7,NG,1
+C0031,Lagos,premium,44,78.98,2,,NG,1
+C0032,Port Harcourt,standard,11,47.1,3,8.0,NG,1
+C0033,Ibadan,standard,33,42.67,1,,NG,0
+C0034,Port Harcourt,basic,52,18.06,5,6.4,NG,1
+C0035,Kano,premium,57,85.89,2,7.1,NG,0
+C0036,Port Harcourt,standard,25,45.32,2,7.5,NG,0
+C0037,Lagos,basic,21,19.08,3,7.2,NG,1
+C0038,Abuja,premium,51,83.62,1,6.1,NG,0
+C0039,Kano,basic,4,23.99,1,7.8,NG,1
+C0040,Kano,standard,16,40.47,2,8.0,NG,0
+C0041,Lagos,basic,54,16.11,2,8.5,NG,0
+C0042,,basic,48,24.27,1,8.5,NG,0
+C0043,Kano,standard,58,48.16,1,6.3,NG,0
+C0044,Port Harcourt,basic,56,18.74,2,7.0,NG,0
+C0045,Ibadan,basic,59,27.18,5,4.7,NG,1
+C0046,Abuja,standard,23,44.41,0,8.1,NG,0
+C0047,Port Harcourt,basic,32,8.41,4,6.9,NG,0
+C0048,Port Harcourt,standard,44,40.22,3,4.5,NG,0
+C0049,Abuja,standard,53,36.15,1,8.0,NG,0
+C0050,Port Harcourt,standard,27,51.87,2,7.3,NG,0
+C0051,Abuja,basic,51,23.03,2,5.6,NG,1
+C0052,Kano,basic,13,20.71,4,7.0,NG,1
+C0053,Abuja,basic,21,6.09,5,4.3,NG,1
+C0054,Ibadan,basic,48,11.14,1,7.5,NG,0
+C0055,Lagos,standard,55,44.1,2,3.7,NG,0
+C0056,Lagos,,6,34.32,0,9.4,NG,0
+C0057,Port Harcourt,basic,69,25.65,6,4.1,NG,1
+C0058,Lagos,basic,57,19.38,1,7.0,NG,0
+C0059,Port Harcourt,standard,25,44.14,1,9.2,NG,1
+C0060,Ibadan,standard,47,44.62,1,5.1,NG,0
+C0061,Ibadan,basic,20,14.3,2,7.9,NG,1
+C0062,Ibadan,basic,9,13.74,3,,NG,0
+C0063,Lagos,basic,42,8.61,2,4.4,NG,1
+C0064,Lagos,premium,64,80.14,0,8.3,NG,0
+C0065,Lagos,premium,63,82.44,3,5.7,NG,0
+C0066,Lagos,basic,6,18.57,5,3.7,NG,1
+C0067,Port Harcourt,basic,44,18.3,3,4.6,NG,0
+C0068,Kano,standard,6,39.36,0,8.9,NG,0
+C0069,Lagos,basic,69,21.5,1,8.8,NG,0
+C0070,,standard,30,30.29,1,6.0,NG,1
+C0071,Lagos,basic,66,13.37,0,,NG,0
+C0072,Port Harcourt,standard,37,41.05,0,,NG,0
+C0073,Ibadan,premium,51,76.95,0,10.0,NG,0
+C0074,Lagos,premium,2,81.31,4,3.7,NG,1
+C0075,Abuja,standard,51,43.85,3,4.4,NG,0
+C0076,Ibadan,basic,43,20.93,2,5.5,NG,0
+C0077,Kano,premium,13,87.47,3,4.9,NG,0
+C0078,Abuja,basic,32,28.23,1,8.8,NG,0
+C0079,Kano,basic,25,23.89,2,5.6,NG,1
+C0080,Kano,basic,3,27.49,2,9.5,NG,0
+C0081,Ibadan,standard,58,55.38,0,8.6,NG,0
+C0082,Kano,basic,48,22.22,4,6.9,NG,0
+C0083,Kano,basic,29,11.61,2,7.6,NG,0
+C0084,Ibadan,basic,22,26.03,3,4.9,NG,0
+C0085,Port Harcourt,standard,17,39.03,1,5.7,NG,0
+C0086,Lagos,,55,31.17,3,7.4,NG,0
+C0087,Kano,standard,5,55.35,0,9.5,NG,0
+C0088,Ibadan,standard,37,41.89,3,6.7,NG,0
+C0089,Abuja,premium,16,73.4,3,6.2,NG,1
+C0090,Port Harcourt,premium,6,75.87,1,,NG,0
+C0091,Lagos,basic,41,19.61,3,6.5,NG,0
+C0092,Lagos,premium,20,87.69,3,4.5,NG,1
+C0093,Ibadan,standard,66,37.59,0,8.1,NG,0
+C0094,Ibadan,standard,51,50.29,1,7.4,NG,0
+C0095,Abuja,standard,28,32.58,1,5.2,NG,0
+C0096,Port Harcourt,standard,70,52.28,0,4.7,NG,0
+C0097,Ibadan,premium,57,79.63,3,5.9,NG,0
+C0098,Lagos,basic,36,21.2,2,4.3,NG,1
+C0099,Ibadan,standard,10,44.36,0,5.1,NG,1
+C0100,Abuja,premium,6,85.61,1,5.3,NG,0
+C0101,Port Harcourt,basic,59,22.23,1,7.6,NG,0
+C0102,Abuja,standard,34,55.13,3,6.2,NG,0
+C0103,Lagos,,66,9.34,6,4.5,NG,0
+C0104,Port Harcourt,standard,35,39.57,1,9.5,NG,0
+C0105,Abuja,basic,36,11.92,3,6.9,NG,0
+C0106,Abuja,standard,59,49.31,1,9.3,NG,0
+C0107,Ibadan,premium,33,69.87,1,7.6,NG,0
+C0108,Abuja,standard,37,59.59,1,8.7,NG,0
+C0109,Abuja,basic,65,20.55,3,8.2,NG,0
+C0110,Kano,standard,17,52.33,1,9.9,NG,1
+C0111,Lagos,basic,17,14.2,3,5.9,NG,0
+C0112,Kano,standard,67,46.18,0,6.5,NG,0
+C0113,Port Harcourt,basic,66,23.75,2,6.9,NG,0
+C0114,Port Harcourt,basic,70,15.76,2,8.5,NG,0
+C0115,Ibadan,basic,66,18.63,3,8.2,NG,0
+C0116,Kano,basic,2,29.34,2,,NG,1
+C0117,Abuja,standard,68,52.6,2,7.3,NG,0
+C0118,Port Harcourt,basic,12,23.47,4,7.6,NG,1
+C0119,Lagos,standard,64,56.83,1,7.6,NG,0
+C0120,Ibadan,standard,49,33.33,5,5.8,NG,0
+C0121,Port Harcourt,,38,81.75,1,8.6,NG,0
+C0122,Kano,basic,33,17.71,4,5.3,NG,0
+C0123,Kano,basic,49,28.54,4,4.5,NG,0
+C0124,Port Harcourt,basic,47,26.66,3,9.3,NG,1
+C0125,Port Harcourt,basic,38,27.02,2,6.1,NG,0
+C0126,Lagos,standard,6,41.42,3,4.9,NG,0
+C0127,Kano,premium,22,83.37,3,5.9,NG,0
+C0128,Kano,basic,13,26.48,7,4.0,NG,1
+C0129,Abuja,standard,71,52.78,1,7.8,NG,0
+C0130,Port Harcourt,premium,60,74.44,2,6.4,NG,0
+C0131,Lagos,standard,2,40.9,0,8.6,NG,0
+C0132,Abuja,standard,45,46.47,3,8.3,NG,0
+C0133,Kano,premium,18,88.37,1,7.0,NG,1
+C0134,Abuja,basic,36,23.72,1,7.5,NG,0
+C0135,Ibadan,standard,66,53.25,2,8.5,NG,0
+C0136,Ibadan,,42,33.29,1,6.1,NG,0
+C0137,Lagos,premium,68,78.37,1,5.9,NG,0
+C0138,Lagos,basic,24,22.99,1,6.5,NG,0
+C0139,Abuja,standard,20,46.62,0,7.9,NG,0
+C0140,Port Harcourt,standard,60,33.65,2,7.9,NG,0
+C0141,Kano,basic,71,26.61,2,4.8,NG,0
+C0142,Kano,basic,47,22.07,4,4.8,NG,1
+C0143,Ibadan,basic,58,17.2,2,5.4,NG,0
+C0144,Ibadan,premium,29,87.19,1,,NG,0
+C0145,Lagos,basic,56,9.62,2,5.2,NG,0
+C0146,Ibadan,basic,13,16.93,3,7.1,NG,0
+C0147,Port Harcourt,basic,41,25.3,2,,NG,0
+C0148,Port Harcourt,basic,53,22.26,4,5.8,NG,0
+C0149,Abuja,basic,28,18.65,2,7.6,NG,0
+C0150,Ibadan,premium,20,79.08,2,7.3,NG,0
+C0151,Port Harcourt,basic,1,18.6,3,6.7,NG,1
+C0152,Lagos,standard,33,50.2,2,9.2,NG,0
+C0153,Port Harcourt,basic,26,18.17,2,7.6,NG,1
+C0154,Port Harcourt,standard,47,49.07,0,4.6,NG,0
+C0155,Port Harcourt,basic,27,7.48,2,7.5,NG,0
+C0156,Port Harcourt,standard,51,52.38,2,8.0,NG,1
+C0157,Abuja,basic,6,34.65,3,6.8,NG,1
+C0158,Kano,basic,71,23.0,0,7.2,NG,0
+C0159,Port Harcourt,standard,6,44.48,2,5.5,NG,0
+C0160,Lagos,standard,26,41.79,1,7.5,NG,0
+C0161,Abuja,basic,19,24.2,3,7.1,NG,1
+C0162,Abuja,basic,57,16.1,4,,NG,0
+C0163,Abuja,standard,36,40.09,0,5.7,NG,0
+C0164,Lagos,basic,54,7.23,4,6.0,NG,1
+C0165,Lagos,,55,21.46,0,9.6,NG,0
+C0166,Port Harcourt,premium,46,78.26,2,7.8,NG,0
+C0167,Kano,basic,42,18.58,2,10.0,NG,0
+C0168,Port Harcourt,basic,37,19.99,2,5.9,NG,0
+C0169,Lagos,basic,39,15.75,3,4.7,NG,0
+C0170,Lagos,basic,56,21.12,3,7.3,NG,0
+C0171,Port Harcourt,basic,57,13.52,2,8.7,NG,0
+C0172,Port Harcourt,standard,33,44.31,4,4.3,NG,0
+C0173,Lagos,premium,61,78.31,0,8.1,NG,0
+C0174,Abuja,premium,2,69.75,3,6.5,NG,0
+C0175,Kano,basic,32,12.73,3,6.7,NG,0
+C0176,Ibadan,premium,49,76.45,1,9.0,NG,0
+C0177,Port Harcourt,basic,44,16.63,3,9.1,NG,1
+C0178,Lagos,premium,29,81.56,1,6.7,NG,0
+C0179,Lagos,basic,66,17.57,0,7.6,NG,0
+C0180,Lagos,standard,5,44.69,0,6.1,NG,1
+C0181,Kano,standard,6,42.55,2,7.8,NG,0
+C0182,Kano,premium,34,64.46,0,6.6,NG,0
+C0183,,premium,44,79.26,0,8.2,NG,0
+C0184,Abuja,basic,30,14.95,4,6.2,NG,0
+C0185,Ibadan,standard,56,44.04,1,9.1,NG,0
+C0186,Port Harcourt,standard,46,40.4,1,7.3,NG,1
+C0187,Ibadan,basic,31,23.93,1,6.8,NG,0
+C0188,Port Harcourt,standard,21,44.72,3,5.4,NG,0
+C0189,Port Harcourt,basic,54,24.25,3,7.4,NG,1
+C0190,Lagos,basic,35,24.69,8,2.8,NG,1
+C0191,Ibadan,standard,60,41.6,3,6.3,NG,0
+C0192,Ibadan,basic,15,24.89,3,,NG,0
+C0193,Kano,standard,55,46.37,4,7.2,NG,0
+C0194,Abuja,standard,51,38.65,1,8.8,NG,0
+C0195,Abuja,basic,39,19.3,4,3.8,NG,0
+C0196,Abuja,premium,68,80.56,1,6.0,NG,0
+C0197,Lagos,basic,52,27.62,0,8.4,NG,0
+C0198,Abuja,basic,66,17.91,3,6.9,NG,0
+C0199,Lagos,basic,51,29.43,0,8.3,NG,0
+C0200,Kano,standard,21,49.62,2,8.4,NG,0
+C0201,Port Harcourt,standard,28,32.31,0,9.9,NG,0
+C0202,Ibadan,,63,13.79,2,6.7,NG,0
+C0203,Abuja,standard,2,48.52,2,7.0,NG,0
+C0204,Kano,standard,65,36.27,1,8.8,NG,0
+C0205,Port Harcourt,standard,68,47.86,1,,NG,0
+C0206,Port Harcourt,basic,60,28.3,3,4.9,NG,1
+C0207,Abuja,basic,34,18.39,3,4.6,NG,0
+C0208,Abuja,premium,49,88.45,1,5.2,NG,0
+C0209,Lagos,premium,22,87.94,0,8.0,NG,0
+C0210,Ibadan,basic,13,19.66,4,4.9,NG,0
+C0211,Abuja,standard,18,44.8,1,6.5,NG,0
+C0212,Abuja,basic,64,21.09,1,5.5,NG,0
+C0213,Abuja,basic,29,22.67,8,3.1,NG,1
+C0214,Lagos,basic,51,10.66,2,4.9,NG,0
+C0215,Lagos,basic,42,19.13,4,4.1,NG,0
+C0216,Kano,basic,71,9.96,0,7.5,NG,0
+C0217,Kano,premium,37,77.93,1,8.0,NG,0
+C0218,,standard,32,43.68,0,8.0,NG,0
+C0219,Ibadan,basic,28,9.1,3,7.0,NG,1
+C0220,Abuja,basic,48,12.42,4,5.5,NG,1
+C0221,Kano,basic,6,17.61,4,5.1,NG,1
+C0222,Abuja,standard,69,57.96,4,5.2,NG,0
+C0223,Kano,standard,70,36.68,2,5.7,NG,0
+C0224,Lagos,basic,8,20.75,2,6.8,NG,1
+C0225,Port Harcourt,basic,2,14.64,1,,NG,1
+C0226,Abuja,standard,63,42.75,2,7.7,NG,0
+C0227,Abuja,premium,66,85.91,1,8.3,NG,0
+C0228,Ibadan,standard,33,46.86,0,8.4,NG,0
+C0229,Kano,premium,3,82.55,1,7.7,NG,0
+C0230,Ibadan,basic,8,22.93,2,6.9,NG,0
+C0231,Port Harcourt,basic,36,23.45,3,4.9,NG,0
+C0232,Ibadan,premium,68,67.03,0,6.6,NG,0
+C0233,Kano,standard,56,47.32,1,6.2,NG,0
+C0234,Abuja,basic,3,19.49,0,9.1,NG,1
+C0235,Kano,basic,48,22.38,3,5.4,NG,1
+C0236,Port Harcourt,basic,58,25.02,4,6.3,NG,0
+C0237,Kano,standard,51,47.49,1,6.0,NG,0
+C0238,Kano,basic,31,24.14,2,6.4,NG,0
+C0239,Lagos,basic,7,12.97,2,5.6,NG,0
+C0240,Kano,standard,53,47.69,2,7.6,NG,0
+C0241,Ibadan,premium,62,79.34,3,8.6,NG,0
+C0242,Port Harcourt,premium,39,79.48,0,6.5,NG,1
+C0243,Port Harcourt,basic,47,27.8,2,7.1,NG,0
+C0244,Ibadan,basic,8,17.07,3,,NG,1
+C0245,Port Harcourt,basic,67,16.0,1,8.2,NG,1
+C0246,Lagos,basic,26,12.12,2,,NG,0
+C0247,Kano,basic,71,18.23,0,7.3,NG,0
+C0248,Abuja,basic,11,26.42,3,7.4,NG,1
+C0249,Abuja,basic,54,9.99,8,3.0,NG,0
+C0250,Port Harcourt,premium,54,81.51,3,5.3,NG,0
+C0251,Ibadan,basic,58,4.8,2,6.3,NG,0
+C0252,Kano,basic,20,15.86,1,8.8,NG,0
+C0253,Port Harcourt,premium,69,82.62,0,8.5,NG,0
+C0254,Abuja,standard,30,41.77,2,6.7,NG,0
+C0255,Port Harcourt,standard,52,37.79,2,6.6,NG,0
+C0256,Abuja,basic,6,17.79,4,4.8,NG,1
+C0257,Abuja,premium,44,85.93,5,5.8,NG,0
+C0258,Ibadan,premium,19,88.95,1,10.0,NG,0
+C0259,Port Harcourt,standard,38,54.07,1,7.2,NG,0
+C0260,Lagos,premium,53,84.09,1,6.1,NG,1
+C0261,Ibadan,standard,38,47.16,0,8.5,NG,1
+C0262,Kano,basic,5,25.92,5,5.7,NG,1
+C0263,Port Harcourt,standard,46,38.06,1,8.7,NG,0
+C0264,Ibadan,standard,26,39.18,1,5.9,NG,0
+C0265,Lagos,basic,45,27.75,0,8.4,NG,0
+C0266,Ibadan,standard,49,50.14,2,5.8,NG,1
+C0267,Port Harcourt,basic,1,25.25,4,7.3,NG,1
+C0268,Lagos,premium,20,81.33,1,8.3,NG,0
+C0269,Ibadan,,11,40.05,1,7.2,NG,0
+C0270,Lagos,basic,50,13.52,3,,NG,0
+C0271,Lagos,premium,30,85.63,0,10.0,NG,0
+C0272,Abuja,premium,8,86.5,2,6.6,NG,0
+C0273,Kano,standard,21,38.28,3,7.3,NG,1
+C0274,Ibadan,basic,68,15.56,4,3.3,NG,1
+C0275,Lagos,standard,48,44.38,1,7.6,NG,0
+C0276,Lagos,basic,29,25.25,5,6.0,NG,1
+C0277,Ibadan,basic,71,17.96,4,3.0,NG,0
+C0278,Abuja,basic,48,14.89,2,7.1,NG,1
+C0279,Kano,basic,19,25.93,1,9.0,NG,1
+C0280,Kano,standard,12,48.58,3,4.4,NG,1
+C0281,Kano,basic,58,15.83,3,6.0,NG,0
+C0282,Abuja,basic,22,16.04,1,7.0,NG,0
+C0283,Port Harcourt,standard,27,51.66,2,6.0,NG,0
+C0284,Lagos,premium,18,72.31,1,6.6,NG,0
+C0285,Ibadan,premium,52,78.24,4,4.5,NG,0
+C0286,Kano,standard,11,47.7,0,7.1,NG,0
+C0287,Lagos,premium,7,80.99,2,6.7,NG,0
+C0288,Port Harcourt,standard,42,50.58,1,7.5,NG,0
+C0289,Ibadan,standard,45,34.73,1,5.8,NG,0
+C0290,Lagos,basic,46,20.11,0,7.3,NG,0
+C0291,Kano,basic,37,21.81,4,,NG,0
+C0292,Lagos,premium,18,82.0,4,7.1,NG,1
+C0293,,basic,59,23.46,2,8.3,NG,0
+C0294,Abuja,standard,70,38.0,0,8.0,NG,0
+C0295,Abuja,basic,9,28.67,3,6.3,NG,0
+C0296,Port Harcourt,basic,22,22.72,5,3.3,NG,1
+C0297,Kano,basic,38,23.36,2,6.9,NG,0
+C0298,Kano,standard,30,41.54,5,2.7,NG,1
+C0299,Port Harcourt,standard,62,46.08,1,6.9,NG,0
+C0300,Lagos,standard,69,52.98,1,5.8,NG,0
+C0301,Port Harcourt,basic,50,19.91,3,5.3,NG,1
+C0302,Lagos,basic,29,21.17,5,5.2,NG,1
+C0303,Lagos,standard,12,46.9,1,7.6,NG,0
+C0304,Lagos,basic,54,10.2,2,8.3,NG,0
+C0305,Kano,basic,61,18.96,3,6.5,NG,0
+C0306,Port Harcourt,standard,69,49.16,2,6.2,NG,1
+C0307,Port Harcourt,basic,17,17.07,2,7.6,NG,0
+C0308,Lagos,basic,45,19.75,1,5.4,NG,0
+C0309,Ibadan,basic,6,19.8,1,9.4,NG,1
+C0310,Port Harcourt,,68,10.52,1,4.8,NG,1
+C0311,Port Harcourt,premium,7,84.83,1,8.2,NG,0
+C0312,Abuja,standard,57,36.88,1,8.0,NG,0
+C0313,Kano,premium,56,82.54,3,5.5,NG,0
+C0314,Abuja,premium,33,79.2,2,6.2,NG,0
+C0315,Abuja,basic,60,17.95,1,5.6,NG,1
+C0316,Port Harcourt,basic,5,20.4,4,5.7,NG,1
+C0317,Kano,standard,63,49.52,4,6.2,NG,0
+C0318,Kano,basic,26,24.88,2,6.1,NG,0
+C0319,,basic,54,17.42,3,6.7,NG,0
+C0320,Abuja,premium,9,79.01,2,,NG,0
+C0321,Port Harcourt,premium,64,74.84,2,5.9,NG,0
+C0322,Kano,basic,11,11.23,4,6.6,NG,1
+C0323,Abuja,standard,66,50.71,1,7.9,NG,0
+C0324,Kano,standard,22,38.42,0,8.1,NG,0
+C0325,Abuja,standard,39,40.59,0,8.9,NG,0
+C0326,Kano,basic,49,22.28,3,6.6,NG,0
+C0327,Ibadan,basic,45,11.91,0,7.1,NG,0
+C0328,Port Harcourt,premium,40,82.88,0,7.2,NG,0
+C0329,Kano,premium,68,74.94,2,7.1,NG,0
+C0330,Ibadan,basic,43,13.18,4,6.9,NG,1
+C0331,Kano,premium,37,76.52,1,,NG,0
+C0332,Lagos,basic,6,14.89,2,6.3,NG,1
+C0333,Port Harcourt,standard,18,46.42,0,8.0,NG,0
+C0334,Port Harcourt,standard,33,53.51,0,6.6,NG,0
+C0335,Ibadan,basic,67,24.04,0,9.4,NG,0
+C0336,Lagos,premium,38,82.79,0,9.7,NG,0
+C0337,Ibadan,basic,4,16.31,8,5.2,NG,1
+C0338,Abuja,premium,15,78.55,0,9.0,NG,0
+C0339,Port Harcourt,premium,42,80.55,2,6.0,NG,0
+C0340,Lagos,premium,11,79.54,2,6.6,NG,0
+C0341,Ibadan,premium,66,80.75,1,6.9,NG,0
+C0342,Abuja,basic,15,12.67,2,7.3,NG,0
+C0343,Port Harcourt,standard,53,55.44,0,9.6,NG,0
+C0344,Ibadan,standard,54,36.78,0,5.0,NG,0
+C0345,Ibadan,standard,43,43.89,2,7.3,NG,0
+C0346,Kano,standard,42,49.72,2,7.1,NG,0
+C0347,Kano,basic,35,15.27,4,5.9,NG,1
+C0348,Ibadan,basic,15,26.04,3,7.0,NG,1
+C0349,Abuja,standard,20,36.27,3,5.1,NG,0
+C0350,Kano,basic,33,15.26,6,5.5,NG,0
+C0351,Abuja,standard,40,30.61,3,6.6,NG,0
+C0352,,basic,62,25.91,3,5.9,NG,0
+C0353,Kano,basic,53,12.54,3,6.2,NG,1
+C0354,Ibadan,basic,70,15.54,4,5.1,NG,0
+C0355,Lagos,standard,40,49.27,0,8.1,NG,0
+C0356,Port Harcourt,basic,32,21.73,2,7.5,NG,1
+C0357,Lagos,basic,55,26.04,4,4.0,NG,0
+C0358,Kano,basic,35,23.53,4,,NG,1
+C0359,Ibadan,standard,69,49.99,2,6.2,NG,0
+C0360,,standard,39,41.76,0,7.9,NG,0
+C0361,Ibadan,basic,46,19.12,1,7.0,NG,0
+C0362,Kano,standard,67,49.06,1,5.3,NG,0
+C0363,Lagos,standard,51,49.14,1,7.9,NG,0
+C0364,Port Harcourt,premium,27,85.3,0,9.4,NG,0
+C0365,Lagos,basic,61,15.03,7,2.9,NG,0
+C0366,Lagos,premium,66,73.05,1,7.6,NG,0
+C0367,Ibadan,basic,40,12.1,1,6.5,NG,0
+C0368,Lagos,premium,60,76.78,0,8.2,NG,0
+C0369,Kano,basic,21,19.02,4,5.3,NG,1
+C0370,Lagos,basic,35,12.46,1,8.7,NG,0
+C0371,Kano,basic,57,18.52,1,6.7,NG,0
+C0372,Port Harcourt,premium,14,83.41,5,5.7,NG,1
+C0373,Lagos,basic,59,25.55,2,5.9,NG,0
+C0374,Kano,premium,66,76.1,3,5.5,NG,0
+C0375,Port Harcourt,basic,70,23.03,2,6.9,NG,0
+C0376,Abuja,premium,11,71.96,1,5.4,NG,0
+C0377,Abuja,basic,2,15.66,2,5.7,NG,0
+C0378,Kano,basic,26,20.26,5,6.0,NG,1
+C0379,Abuja,standard,36,40.75,5,4.2,NG,0
+C0380,Lagos,basic,37,14.95,4,4.0,NG,1
+C0381,Kano,standard,5,46.23,3,4.5,NG,1
+C0382,Port Harcourt,basic,48,13.67,2,6.9,NG,0
+C0383,Kano,basic,36,20.28,5,4.3,NG,0
+C0384,Abuja,basic,25,18.97,7,3.8,NG,1
+C0385,Port Harcourt,basic,34,22.67,4,2.2,NG,0
+C0386,Lagos,basic,40,24.14,3,5.2,NG,1
+C0387,Abuja,premium,16,80.41,1,6.4,NG,0
+C0388,Port Harcourt,standard,54,41.63,2,7.7,NG,0
+C0389,Lagos,basic,71,25.66,3,7.2,NG,0
+C0390,Port Harcourt,,26,45.79,1,8.1,NG,0
+C0391,Lagos,basic,53,14.32,1,4.9,NG,0
+C0392,Abuja,standard,5,45.64,4,6.6,NG,1
+C0393,Ibadan,basic,28,15.93,1,8.8,NG,0
+C0394,Ibadan,standard,40,29.45,0,7.0,NG,0
+C0395,Abuja,standard,57,38.85,3,6.5,NG,0
+C0396,Abuja,basic,23,17.33,3,6.6,NG,1
+C0397,Port Harcourt,premium,18,76.85,1,6.8,NG,0
+C0398,Kano,standard,62,35.37,2,,NG,0
+C0399,Lagos,standard,21,42.5,2,5.8,NG,1
+C0010,Abuja,premium,15,85.28,1,,NG,0
+C0020,Port Harcourt,standard,13,40.26,1,8.5,NG,0
+C0030,Abuja,basic,42,26.96,5,3.7,NG,1
