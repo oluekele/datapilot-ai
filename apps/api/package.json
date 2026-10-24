@@ -1,0 +1,50 @@
+{
+  "name": "@datapilot/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start:dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main.js",
+    "lint": "tsc -p tsconfig.build.json --noEmit",
+    "prisma:generate": "node --env-file-if-exists=../../.env ../../node_modules/prisma/build/index.js generate",
+    "prisma:migrate": "node --env-file-if-exists=../../.env ../../node_modules/prisma/build/index.js migrate dev",
+    "prisma:deploy": "node --env-file-if-exists=../../.env ../../node_modules/prisma/build/index.js migrate deploy",
+    "db:seed": "node --env-file-if-exists=../../.env -r ts-node/register prisma/seed.ts",
+    "admin:promote": "node --env-file-if-exists=../../.env -r ts-node/register scripts/promote-admin.ts",
+    "test:e2e": "node --env-file-if-exists=../../.env -r ts-node/register --test test/e2e.test.ts",
+    "mail:test": "node --env-file-if-exists=../../.env -r ts-node/register scripts/send-test-email.ts",
+    "trials:backfill": "node --env-file-if-exists=../../.env -r ts-node/register scripts/backfill-trials.ts"
+  },
+  "dependencies": {
+    "@nestjs/common": "^11.0.0",
+    "@nestjs/core": "^11.0.0",
+    "@nestjs/platform-express": "^11.0.0",
+    "@nestjs/swagger": "^11.4.7",
+    "@nestjs/throttler": "^6.4.0",
+    "@prisma/client": "^6.0.0",
+    "argon2": "^0.45.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.15.1",
+    "cookie-parser": "^1.4.7",
+    "fflate": "^0.8.3",
+    "helmet": "^8.0.0",
+    "nodemailer": "^10.0.16",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.1"
+  },
+  "devDependencies": {
+    "@nestjs/cli": "^11.0.0",
+    "@nestjs/schematics": "^11.0.0",
+    "@nestjs/testing": "^11.0.0",
+    "@types/cookie-parser": "^1.4.10",
+    "@types/express": "^5.0.0",
+    "@types/multer": "^2.3.0",
+    "@types/node": "^24.0.0",
+    "@types/nodemailer": "^8.0.2",
+    "eslint": "^9.0.0",
+    "prisma": "^6.19.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  }
+}

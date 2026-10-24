@@ -439,3 +439,41 @@ def exploration_snapshot(
         "correlation_method": correlation_method,
         "top_correlations": correlations.to_dict("records"),
     }
+
+
+# Name fragments that suggest an identifier column (used by column_kinds).
+ID_NAME_TERMS = ("id", "uuid", "identifier", "key", "code", "number")
+
+
+def column_kinds(df: pd.DataFrame) -> dict[str, str]:
+    """Column kinds for the UI pickers, as listed in the API contract.
+
+    ``exploration.classify_columns`` returns numeric / categorical / boolean /
+    datetime / text. Two kinds are derived on top of it:
+
+    * ``empty`` – every value is missing.
+    * ``identifier`` – text or categorical columns (or integer columns whose
+      name looks like an ID) where nearly every non-missing value is unique.
+    """
+    kinds: dict[str, str] = dict(classify_columns(df))
+    for column in df.columns:
+        name = str(column)
+        series = df[column]
+        observed = series.dropna()
+        if observed.empty:
+            kinds[name] = "empty"
+            continue
+        kind = kinds[name]
+        if kind == "datetime" or kind == "boolean" or len(observed) < 20:
+            continue
+        unique_ratio = observed.nunique() / len(observed)
+        if unique_ratio < 0.98:
+            continue
+        tokens = name.lower().replace("-", "_").replace(" ", "_").split("_")
+        if kind in ("text", "categorical") or (
+            kind == "numeric"
+            and pd.api.types.is_integer_dtype(series)
+            and any(term in tokens for term in ID_NAME_TERMS)
+        ):
+            kinds[name] = "identifier"
+    return kinds

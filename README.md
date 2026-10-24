@@ -1,5 +1,39 @@
 # DataPilot AI
 
+> **SaaS migration in progress:** the current Streamlit app remains the local
+> analysis product. A new Next.js + NestJS + PostgreSQL platform is being built
+> alongside it. The SaaS foundation is for development only and is not ready for
+> real accounts, billing, or sensitive uploads yet. See
+> [docs/saas-architecture.md](docs/saas-architecture.md).
+
+## SaaS platform development
+
+Prerequisites: Node.js 20+, npm, and Docker Compose.
+
+```bash
+cp .env.example .env
+# Edit .env and set POSTGRES_PASSWORD and the matching DATABASE_URL password.
+npm install
+docker compose up -d postgres
+npm run db:generate
+npm run db:migrate
+npm run dev
+```
+
+The Next.js app is at `http://localhost:3100`; the NestJS API is at
+`http://localhost:4000/api/v1/health/live` and its database readiness check is
+`http://localhost:4000/api/v1/health/ready`. The walkthrough appears on first
+visit and is available again from **Product tour**. The current shell is a
+product-preview only; account registration and upload workflows are not wired
+to the API yet.
+
+Never commit `.env` or place real user data in the development database. Do not
+expose the Compose PostgreSQL port beyond localhost. Review the security
+invariants and remaining production work in
+[docs/saas-architecture.md](docs/saas-architecture.md) before deployment.
+
+---
+
 **A local-first, modular data-analysis workspace.** Upload a CSV or Excel file
 and choose what you want to do with it: check data quality, explore patterns,
 run statistical tests, build charts, assess ML readiness, or export a

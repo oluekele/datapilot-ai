@@ -1,0 +1,448 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserStatus {
+  PENDING_EMAIL
+  ACTIVE
+  SUSPENDED
+}
+
+enum PlatformRole {
+  USER
+  SUPER_ADMIN
+}
+
+enum OrganizationKind {
+  INDIVIDUAL
+  TEAM
+}
+
+enum OrganizationStatus {
+  ACTIVE
+  SUSPENDED
+}
+
+enum MembershipRole {
+  OWNER
+  ADMIN
+  MEMBER
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  PAST_DUE
+  CANCELED
+  INCOMPLETE
+}
+
+enum SubscriptionSource {
+  PAYMENT
+  ADMIN
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+}
+
+enum DatasetVersionKind {
+  RAW
+  REPAIRED
+}
+
+enum ProcessingJobType {
+  PROFILE
+  REPAIR
+  EXPLORE
+  ANALYZE
+  VISUALIZE
+  TRAIN
+}
+
+enum ArtifactKind {
+  CHART
+  TABLE
+  MODEL
+  REPORT
+  CODE
+  DATA
+}
+
+enum ProcessingJobStatus {
+  QUEUED
+  RUNNING
+  SUCCEEDED
+  FAILED
+  CANCELED
+}
+
+model User {
+  id                    String                   @id @default(uuid()) @db.Uuid
+  email                 String                   @unique @db.VarChar(320)
+  passwordHash          String                   @db.VarChar(255)
+  displayName           String                   @db.VarChar(120)
+  status                UserStatus               @default(PENDING_EMAIL)
+  platformRole          PlatformRole             @default(USER)
+  emailVerifiedAt       DateTime?
+  onboardingCompletedAt DateTime?
+  lastLoginAt           DateTime?
+  failedLoginCount      Int                      @default(0)
+  lockedUntil           DateTime?
+  memberships           OrganizationMembership[]
+  createdOrganizations  Organization[]           @relation("OrganizationCreator")
+  sessions              Session[]
+  verificationTokens    EmailVerificationToken[]
+  resetTokens           PasswordResetToken[]
+  trialUse              UserTrialUse?            @relation("TrialUser")
+  grantedUserTrials     UserTrialUse[]           @relation("UserTrialGrantor")
+  grantedOrgTrials      OrganizationTrialUse[]   @relation("OrgTrialGrantor")
+  auditEvents           AuditEvent[]             @relation("AuditActor")
+  createdDatasets       Dataset[]                @relation("DatasetCreator")
+  createdVersions       DatasetVersion[]         @relation("VersionCreator")
+  createdJobs           ProcessingJob[]          @relation("JobCreator")
+  sentInvitations       Invitation[]             @relation("InvitationSender")
+  createdArtifacts      Artifact[]               @relation("ArtifactCreator")
+  createdAt             DateTime                 @default(now())
+  updatedAt             DateTime                 @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model Organization {
+  id              String                   @id @default(uuid()) @db.Uuid
+  name            String                   @db.VarChar(160)
+  slug            String                   @unique @db.VarChar(80)
+  kind            OrganizationKind         @default(TEAM)
+  status          OrganizationStatus       @default(ACTIVE)
+  suspendedReason String?                  @db.VarChar(500)
+  createdById     String                   @db.Uuid
+  createdBy       User                     @relation("OrganizationCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  memberships     OrganizationMembership[]
+  subscription    Subscription?
+  trialUse        OrganizationTrialUse?
+  datasets        Dataset[]
+  jobs            ProcessingJob[]
+  invitations     Invitation[]
+  payments        Payment[]
+  artifacts       Artifact[]
+  auditEvents     AuditEvent[]
+  createdAt       DateTime                 @default(now())
+  updatedAt       DateTime                 @updatedAt
+
+  @@index([status, createdAt])
+}
+
+model OrganizationMembership {
+  id             String         @id @default(uuid()) @db.Uuid
+  organizationId String         @db.Uuid
+  userId         String         @db.Uuid
+  role           MembershipRole @default(MEMBER)
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  user           User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt      DateTime       @default(now())
+
+  @@unique([organizationId, userId])
+  @@index([userId, role])
+}
+
+model Invitation {
+  id             String         @id @default(uuid()) @db.Uuid
+  organizationId String         @db.Uuid
+  email          String         @db.VarChar(320)
+  role           MembershipRole @default(MEMBER)
+  tokenHash      String         @unique @db.Char(64)
+  invitedById    String         @db.Uuid
+  expiresAt      DateTime
+  acceptedAt     DateTime?
+  revokedAt      DateTime?
+  organization   Organization   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  invitedBy      User           @relation("InvitationSender", fields: [invitedById], references: [id], onDelete: Restrict)
+  createdAt      DateTime       @default(now())
+
+  @@index([organizationId, acceptedAt, revokedAt])
+}
+
+model Plan {
+  id               String         @id @default(uuid()) @db.Uuid
+  code             String         @unique @db.VarChar(40)
+  name             String         @db.VarChar(100)
+  description      String?        @db.VarChar(500)
+  priceMinor       Int
+  currency         String         @default("NGN") @db.Char(3)
+  interval         String         @default("monthly") @db.VarChar(16)
+  // Paystack plan code (PLN_...) used for recurring billing.
+  providerPlanCode String?        @db.VarChar(80)
+  // { maxDatasets, maxJobsPerMonth, maxFileMb, maxMembers }
+  limits           Json
+  active           Boolean        @default(true)
+  subscriptions    Subscription[]
+  payments         Payment[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+
+  @@index([active, priceMinor])
+}
+
+model Subscription {
+  id                     String             @id @default(uuid()) @db.Uuid
+  organizationId         String             @unique @db.Uuid
+  planId                 String             @db.Uuid
+  status                 SubscriptionStatus @default(INCOMPLETE)
+  source                 SubscriptionSource @default(PAYMENT)
+  provider               String?            @db.VarChar(32)
+  providerCustomerId     String?            @db.VarChar(160)
+  providerSubscriptionId String?            @unique @db.VarChar(160)
+  providerEmailToken     String?            @db.VarChar(160)
+  currentPeriodStart     DateTime?
+  currentPeriodEnd       DateTime?
+  cancelAtPeriodEnd      Boolean            @default(false)
+  organization           Organization       @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  plan                   Plan               @relation(fields: [planId], references: [id], onDelete: Restrict)
+  createdAt              DateTime           @default(now())
+  updatedAt              DateTime           @updatedAt
+
+  @@index([status, currentPeriodEnd])
+  @@index([provider, providerCustomerId])
+}
+
+model Payment {
+  id             String        @id @default(uuid()) @db.Uuid
+  organizationId String        @db.Uuid
+  planId         String?       @db.Uuid
+  provider       String        @db.VarChar(32)
+  reference      String        @unique @db.VarChar(120)
+  amountMinor    Int
+  currency       String        @db.Char(3)
+  status         PaymentStatus @default(PENDING)
+  paidAt         DateTime?
+  organization   Organization  @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  plan           Plan?         @relation(fields: [planId], references: [id], onDelete: SetNull)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  @@index([organizationId, createdAt])
+  @@index([status, createdAt])
+}
+
+// Free trials are granted by a super-admin and can be consumed exactly once,
+// both per organisation and per owning user. The unique constraints are the
+// last line of defence: a row is never deleted, so a trial cannot be re-used.
+model UserTrialUse {
+  id             String    @id @default(uuid()) @db.Uuid
+  userId         String    @unique @db.Uuid
+  organizationId String    @db.Uuid
+  startedAt      DateTime  @default(now())
+  expiresAt      DateTime
+  grantedById    String?   @db.Uuid
+  user           User      @relation("TrialUser", fields: [userId], references: [id], onDelete: Restrict)
+  grantedBy      User?     @relation("UserTrialGrantor", fields: [grantedById], references: [id], onDelete: SetNull)
+}
+
+model OrganizationTrialUse {
+  id             String       @id @default(uuid()) @db.Uuid
+  organizationId String       @unique @db.Uuid
+  startedAt      DateTime     @default(now())
+  expiresAt      DateTime
+  endedEarlyAt   DateTime?
+  reason         String       @db.VarChar(500)
+  grantedById    String?      @db.Uuid
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  grantedBy      User?        @relation("OrgTrialGrantor", fields: [grantedById], references: [id], onDelete: SetNull)
+}
+
+model Dataset {
+  id             String           @id @default(uuid()) @db.Uuid
+  organizationId String           @db.Uuid
+  createdById    String           @db.Uuid
+  name           String           @db.VarChar(255)
+  deletedAt      DateTime?
+  organization   Organization     @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  createdBy      User             @relation("DatasetCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  versions       DatasetVersion[]
+  jobs           ProcessingJob[]
+  artifacts      Artifact[]
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+
+  @@unique([id, organizationId])
+  @@index([organizationId, deletedAt, updatedAt])
+}
+
+model DatasetVersion {
+  id               String             @id @default(uuid()) @db.Uuid
+  datasetId        String             @db.Uuid
+  organizationId   String             @db.Uuid
+  createdById      String             @db.Uuid
+  versionNumber    Int
+  kind             DatasetVersionKind
+  parentVersionId  String?            @db.Uuid
+  originalFilename String             @db.VarChar(255)
+  // Opaque key in private storage; never sent to the browser.
+  objectKey        String?            @unique @db.VarChar(512)
+  sha256           String             @db.Char(64)
+  fileSizeBytes    Int
+  contentType      String             @db.VarChar(127)
+  rowCount         Int?
+  columnCount      Int?
+  repairPlan       Json?
+  appliedRepairs   Json?
+  purgedAt         DateTime?
+  dataset          Dataset            @relation(fields: [datasetId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  createdBy        User               @relation("VersionCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  parentVersion    DatasetVersion?    @relation("VersionLineage", fields: [parentVersionId], references: [id], onDelete: Restrict)
+  childVersions    DatasetVersion[]   @relation("VersionLineage")
+  jobs             ProcessingJob[]    @relation("JobInput")
+  producedBy       ProcessingJob[]    @relation("JobOutput")
+  artifacts        Artifact[]
+  createdAt        DateTime           @default(now())
+
+  @@unique([datasetId, versionNumber])
+  @@unique([id, datasetId, organizationId])
+  @@index([datasetId, kind, createdAt])
+}
+
+model ProcessingJob {
+  id               String              @id @default(uuid()) @db.Uuid
+  organizationId   String              @db.Uuid
+  datasetId        String              @db.Uuid
+  datasetVersionId String              @db.Uuid
+  outputVersionId  String?             @db.Uuid
+  createdById      String              @db.Uuid
+  type             ProcessingJobType
+  status           ProcessingJobStatus @default(QUEUED)
+  parameters       Json
+  result           Json?
+  errorMessage     String?             @db.VarChar(500)
+  attempts         Int                 @default(0)
+  // Automatic follow-up profiling is not counted against plan job limits.
+  billable         Boolean             @default(true)
+  startedAt        DateTime?
+  finishedAt       DateTime?
+  organization     Organization        @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  dataset          Dataset             @relation(fields: [datasetId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  datasetVersion   DatasetVersion      @relation("JobInput", fields: [datasetVersionId, datasetId, organizationId], references: [id, datasetId, organizationId], onDelete: Restrict)
+  outputVersion    DatasetVersion?     @relation("JobOutput", fields: [outputVersionId], references: [id], onDelete: SetNull)
+  createdBy        User                @relation("JobCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  artifacts        Artifact[]
+  createdAt        DateTime            @default(now())
+  updatedAt        DateTime            @updatedAt
+
+  @@index([organizationId, status, createdAt])
+  @@index([organizationId, billable, createdAt])
+  @@index([status, createdAt])
+  @@index([datasetId, createdAt])
+}
+
+model Session {
+  id                   String    @id @default(uuid()) @db.Uuid
+  userId               String    @db.Uuid
+  tokenHash            String    @unique @db.Char(64)
+  activeOrganizationId String?   @db.Uuid
+  expiresAt            DateTime
+  revokedAt            DateTime?
+  // Last time the user re-entered their password (required for admin actions).
+  stepUpAt             DateTime?
+  lastUsedAt           DateTime  @default(now())
+  ipAddress            String?   @db.VarChar(45)
+  userAgent            String?   @db.VarChar(500)
+  user                 User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt            DateTime  @default(now())
+
+  @@index([userId, expiresAt, revokedAt])
+}
+
+model EmailVerificationToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @db.Uuid
+  tokenHash  String    @unique @db.Char(64)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model PasswordResetToken {
+  id         String    @id @default(uuid()) @db.Uuid
+  userId     String    @db.Uuid
+  tokenHash  String    @unique @db.Char(64)
+  expiresAt  DateTime
+  consumedAt DateTime?
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now())
+
+  @@index([userId, expiresAt])
+}
+
+model AuditEvent {
+  id             String        @id @default(uuid()) @db.Uuid
+  organizationId String?       @db.Uuid
+  actorUserId    String?       @db.Uuid
+  action         String        @db.VarChar(100)
+  subjectType    String?       @db.VarChar(80)
+  subjectId      String?       @db.VarChar(80)
+  metadata       Json?
+  ipAddress      String?       @db.VarChar(45)
+  userAgent      String?       @db.VarChar(500)
+  organization   Organization? @relation(fields: [organizationId], references: [id], onDelete: SetNull)
+  actor          User?         @relation("AuditActor", fields: [actorUserId], references: [id], onDelete: SetNull)
+  createdAt      DateTime      @default(now())
+
+  @@index([organizationId, createdAt])
+  @@index([actorUserId, createdAt])
+  @@index([action, createdAt])
+}
+
+model BillingWebhookEvent {
+  id              String    @id @default(uuid()) @db.Uuid
+  provider        String    @db.VarChar(32)
+  providerEventId String    @db.VarChar(200)
+  eventType       String    @db.VarChar(80)
+  // Only the fields needed for reconciliation; never full card data.
+  summary         Json
+  processedAt     DateTime?
+  failedAt        DateTime?
+  createdAt       DateTime  @default(now())
+
+  @@unique([provider, providerEventId])
+  @@index([processedAt, createdAt])
+}
+
+// A downloadable output of a job (chart, table, model, report, code, data).
+// File bytes live encrypted in private storage under objectKey.
+model Artifact {
+  id               String         @id @default(uuid()) @db.Uuid
+  organizationId   String         @db.Uuid
+  datasetId        String         @db.Uuid
+  datasetVersionId String         @db.Uuid
+  jobId            String         @db.Uuid
+  createdById      String         @db.Uuid
+  kind             ArtifactKind
+  title            String         @db.VarChar(200)
+  filename         String         @db.VarChar(255)
+  contentType      String         @db.VarChar(127)
+  objectKey        String?        @unique @db.VarChar(512)
+  sha256           String         @db.Char(64)
+  sizeBytes        Int
+  metadata         Json?
+  deletedAt        DateTime?
+  organization     Organization   @relation(fields: [organizationId], references: [id], onDelete: Restrict)
+  dataset          Dataset        @relation(fields: [datasetId, organizationId], references: [id, organizationId], onDelete: Restrict)
+  datasetVersion   DatasetVersion @relation(fields: [datasetVersionId], references: [id], onDelete: Restrict)
+  job              ProcessingJob  @relation(fields: [jobId], references: [id], onDelete: Restrict)
+  createdBy        User           @relation("ArtifactCreator", fields: [createdById], references: [id], onDelete: Restrict)
+  createdAt        DateTime       @default(now())
+
+  @@index([organizationId, deletedAt, createdAt])
+  @@index([organizationId, kind, createdAt])
+  @@index([datasetId, createdAt])
+  @@index([jobId])
+}
