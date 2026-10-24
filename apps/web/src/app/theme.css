@@ -1,0 +1,222 @@
+/*
+ * DataPilot colour system: light and dark themes.
+ *
+ * Every colour in the app comes from these tokens. The theme is chosen by
+ * `data-theme="light" | "dark"` on <html> (set by ThemeToggle and the no-flash
+ * script in layout.tsx); without a saved choice it follows the OS setting.
+ *
+ * Token roles
+ *   --bg            page background        --surface    cards, panels, inputs
+ *   --surface-2     subtle fills            --tint       light brand fill
+ *   --tint-strong   stronger brand fill     --line       hairline borders
+ *   --line-strong   emphasised borders      --brand-line brand-coloured borders
+ *   --ink           primary text            --muted      secondary text
+ *   --brand         brand colour            --brand-text brand text on surfaces
+ *   --deep          dark brand areas        --on-brand   text on brand/dark areas
+ */
+
+:root {
+  color-scheme: light;
+
+  --bg: #eef2fa;
+  --bg-wash-1: #c7d7f8;
+  --bg-wash-2: #ffe1cc;
+  --bg-wash-3: #cde7fb;
+  --surface: #ffffff;
+  --surface-2: #f2f5fb;
+  --surface-raised: #ffffff;
+  --tint: #e0e9fb;
+  --tint-strong: #b3c9f2;
+  --line: #d5ddec;
+  --line-strong: #b0bed8;
+  --brand-line: #5b85d9;
+
+  --ink: #0a1630;
+  --muted: #4b5874;
+  --faint: #7a869e;
+
+  --brand: #1d4ed8;
+  --brand-2: #2563eb;
+  --brand-text: #1e40af;
+  --brand-soft-text: #3b6fd6;
+  --deep: #0b1f4d;
+  --on-brand: #ffffff;
+  --lime-pop: #38bdf8;
+
+  --pop: #ff5a1f;
+  --pop-2: #ff9a3d;
+  --pop-soft: #ffeadd;
+  --pop-text: #d9480f;
+
+  --good-bg: #d4f5e2;
+  --good-fg: #05744a;
+  --good-line: #9fdfbc;
+  --warn-bg: #fff0c7;
+  --warn-fg: #8f5200;
+  --warn-line: #f5d27a;
+  --bad-bg: #ffe0d5;
+  --bad-fg: #b8300c;
+  --bad-line: #f6b29b;
+  --info-bg: #dbeaff;
+  --info-fg: #1b5bbd;
+  --info-line: #a9c8f5;
+
+  --shadow-base: #0b1f4d;
+  --shadow-sm: 0 1px 2px color-mix(in srgb, var(--shadow-base) 10%, transparent);
+  --shadow-md: 0 14px 36px -18px color-mix(in srgb, var(--shadow-base) 35%, transparent);
+  --shadow-lg: 0 30px 70px -28px color-mix(in srgb, var(--shadow-base) 45%, transparent);
+
+  --sidebar-bg: linear-gradient(180deg, #0b1a3d 0%, #142c66 100%);
+  --sidebar-ink: #dbe6ff;
+  --sidebar-muted: #8fa9e0;
+  --admin-sidebar-bg: linear-gradient(180deg, #1d1940 0%, #2e2766 100%);
+  --hero-card-bg: linear-gradient(140deg, #d6e4ff, #ffeedf);
+  --security-bg: radial-gradient(circle at 90% 0%, #38bdf855 0, transparent 360px),
+    linear-gradient(135deg, #0b1a3d 0%, #1e3a8a 100%);
+}
+
+/* Dark theme: deep navy surfaces, brighter brand colours for contrast. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --bg: #060b18;
+  --bg-wash-1: #0f2350;
+  --bg-wash-2: #3a1d0e;
+  --bg-wash-3: #0b2f45;
+  --surface: #0c1428;
+  --surface-2: #111b33;
+  --surface-raised: #15213d;
+  --tint: #12244d;
+  --tint-strong: #1c3a7a;
+  --line: #1c2741;
+  --line-strong: #2b3a5c;
+  --brand-line: #3b6fd6;
+
+  --ink: #e8eefc;
+  --muted: #9aa8c7;
+  --faint: #6c7a99;
+
+  --brand: #5b8cff;
+  --brand-2: #38bdf8;
+  --brand-text: #7ea6ff;
+  --brand-soft-text: #a5c0ff;
+  --deep: #050d22;
+  --on-brand: #ffffff;
+  --lime-pop: #5cc8ff;
+
+  --pop: #ff6a2b;
+  --pop-2: #ffa24a;
+  --pop-soft: #3a1e10;
+  --pop-text: #ff9a63;
+
+  --good-bg: #0e3324;
+  --good-fg: #5ee6a8;
+  --good-line: #1f5a40;
+  --warn-bg: #362a0c;
+  --warn-fg: #ffcf5c;
+  --warn-line: #5e4a14;
+  --bad-bg: #3b160d;
+  --bad-fg: #ff8f6b;
+  --bad-line: #6a2a18;
+  --info-bg: #0f2442;
+  --info-fg: #8ab8ff;
+  --info-line: #23406b;
+
+  --shadow-base: #000000;
+  --shadow-md: 0 14px 36px -18px color-mix(in srgb, #000 70%, transparent);
+  --shadow-lg: 0 30px 70px -28px color-mix(in srgb, #000 80%, transparent);
+
+  --sidebar-bg: linear-gradient(180deg, #040a1a 0%, #0a1633 100%);
+  --sidebar-ink: #d6e1fb;
+  --sidebar-muted: #7f9bd6;
+  --admin-sidebar-bg: linear-gradient(180deg, #110f26 0%, #1c1840 100%);
+  --hero-card-bg: linear-gradient(140deg, #13285a, #3a2112);
+  --security-bg: radial-gradient(circle at 90% 0%, #38bdf833 0, transparent 360px),
+      linear-gradient(135deg, #040a1a 0%, #10285e 100%);
+}
+
+/* No saved choice: follow the operating system. Mirrors the dark block above. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    color-scheme: dark;
+    --bg: #060b18;
+    --bg-wash-1: #0f2350;
+    --bg-wash-2: #3a1d0e;
+    --bg-wash-3: #0b2f45;
+    --surface: #0c1428;
+    --surface-2: #111b33;
+    --surface-raised: #15213d;
+    --tint: #12244d;
+    --tint-strong: #1c3a7a;
+    --line: #1c2741;
+    --line-strong: #2b3a5c;
+    --brand-line: #3b6fd6;
+    --ink: #e8eefc;
+    --muted: #9aa8c7;
+    --faint: #6c7a99;
+    --brand: #5b8cff;
+    --brand-2: #38bdf8;
+    --brand-text: #7ea6ff;
+    --brand-soft-text: #a5c0ff;
+    --deep: #050d22;
+    --lime-pop: #5cc8ff;
+    --pop: #ff6a2b;
+    --pop-2: #ffa24a;
+    --pop-soft: #3a1e10;
+    --pop-text: #ff9a63;
+    --good-bg: #0e3324;
+    --good-fg: #5ee6a8;
+    --good-line: #1f5a40;
+    --warn-bg: #362a0c;
+    --warn-fg: #ffcf5c;
+    --warn-line: #5e4a14;
+    --bad-bg: #3b160d;
+    --bad-fg: #ff8f6b;
+    --bad-line: #6a2a18;
+    --info-bg: #0f2442;
+    --info-fg: #8ab8ff;
+    --info-line: #23406b;
+    --shadow-base: #000000;
+    --shadow-md: 0 14px 36px -18px color-mix(in srgb, #000 70%, transparent);
+    --shadow-lg: 0 30px 70px -28px color-mix(in srgb, #000 80%, transparent);
+    --sidebar-bg: linear-gradient(180deg, #040a1a 0%, #0a1633 100%);
+    --sidebar-ink: #d6e1fb;
+    --sidebar-muted: #7f9bd6;
+    --admin-sidebar-bg: linear-gradient(180deg, #110f26 0%, #1c1840 100%);
+    --hero-card-bg: linear-gradient(140deg, #13285a, #3a2112);
+    --security-bg: radial-gradient(circle at 90% 0%, #38bdf833 0, transparent 360px),
+      linear-gradient(135deg, #040a1a 0%, #10285e 100%);
+  }
+}
+
+/* Shared, theme-independent tokens and aliases for older names. */
+:root {
+  --paper: var(--bg);
+  --white: var(--surface);
+  --soft: var(--surface-2);
+  --soft-green: var(--tint);
+  --green: var(--tint-strong);
+  --lime: var(--lime-pop);
+  --accent: var(--brand);
+  --brand-ink: var(--ink);
+  --grad-brand: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  --grad-pop: linear-gradient(135deg, var(--pop) 0%, var(--pop-2) 100%);
+  --glow-brand: 0 8px 24px -6px color-mix(in srgb, #2563eb 55%, transparent);
+  --glow-pop: 0 10px 28px -6px color-mix(in srgb, #ff5a1f 55%, transparent);
+  --radius: 10px;
+  --mono: "DM Mono", monospace;
+  --sans: "DM Sans", sans-serif;
+  --serif: "Playfair Display", serif;
+}
+
+/* Page background: soft colour washes so the canvas is never flat. */
+body {
+  background:
+    radial-gradient(1200px 600px at 0% -10%, color-mix(in srgb, var(--bg-wash-1) 70%, transparent), transparent 60%),
+    radial-gradient(900px 500px at 100% 0%, color-mix(in srgb, var(--bg-wash-2) 55%, transparent), transparent 60%),
+    radial-gradient(1000px 700px at 60% 110%, color-mix(in srgb, var(--bg-wash-3) 55%, transparent), transparent 60%),
+    var(--bg);
+  background-attachment: fixed;
+  color: var(--ink);
+  transition: background-color 0.25s ease, color 0.25s ease;
+}

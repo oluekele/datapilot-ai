@@ -1,0 +1,26 @@
+{
+  "name": "datapilot-ai-platform",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "dev": "concurrently -k -n api,web -c blue,green \"npm:dev:api\" \"npm:dev:web\"",
+    "dev:api": "npm run start:dev --workspace @datapilot/api",
+    "dev:web": "npm run dev --workspace @datapilot/web",
+    "build": "npm run build --workspace @datapilot/api && npm run build --workspace @datapilot/web",
+    "lint": "npm run lint --workspace @datapilot/api && npm run lint --workspace @datapilot/web",
+    "db:generate": "npm run prisma:generate --workspace @datapilot/api",
+    "db:migrate": "npm run prisma:migrate --workspace @datapilot/api",
+    "db:seed": "npm run db:seed --workspace @datapilot/api",
+    "admin:promote": "npm run admin:promote --workspace @datapilot/api --",
+    "test:e2e": "npm run test:e2e --workspace @datapilot/api",
+    "mail:test": "npm run mail:test --workspace @datapilot/api --",
+    "trials:backfill": "npm run trials:backfill --workspace @datapilot/api --"
+  },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
