@@ -26,7 +26,9 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
   app.use(cookieParser());
   // The docs page calls the API from the API's own origin, so trust it while docs are on.
-  const apiOrigins = config.docsEnabled ? [`http://localhost:${config.port}`, `http://127.0.0.1:${config.port}`] : [];
+  const apiOrigins = config.docsEnabled
+    ? [`http://localhost:${config.port}`, `http://127.0.0.1:${config.port}`, config.apiPublicOrigin].filter(Boolean)
+    : [];
   app.use(csrfMiddleware([...config.webOrigins, ...apiOrigins], !config.production));
   app.enableCors({
     origin: (origin, callback) =>

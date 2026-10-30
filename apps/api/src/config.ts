@@ -33,8 +33,11 @@ export function loadConfig() {
     production,
     webOrigins: (process.env.WEB_ORIGIN ?? "http://localhost:3100")
       .split(",")
-      .map((origin) => origin.trim())
+      // Browsers send Origin without a trailing slash, so "https://x.app/" must match too.
+      .map((origin) => origin.trim().replace(/\/+$/, ""))
       .filter(Boolean),
+    // The API's own public URL (Render sets RENDER_EXTERNAL_URL), used by the docs page.
+    apiPublicOrigin: (process.env.API_PUBLIC_URL ?? process.env.RENDER_EXTERNAL_URL ?? "").trim().replace(/\/+$/, ""),
     get publicWebUrl(): string {
       return process.env.PUBLIC_WEB_URL ?? this.webOrigins[0];
     },
