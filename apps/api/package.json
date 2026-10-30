@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start:dev": "nest start --watch",
-    "build": "nest build",
+    "build": "npm run prisma:generate && nest build",
     "start": "node dist/main.js",
     "lint": "tsc -p tsconfig.build.json --noEmit",
     "prisma:generate": "node --env-file-if-exists=../../.env ../../node_modules/prisma/build/index.js generate",

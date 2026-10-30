@@ -40,7 +40,7 @@ async function bootstrap(): Promise<void> {
   app.enableShutdownHooks();
   if (config.docsEnabled) setupSwagger(app);
 
-  await app.listen(config.port, process.env.API_HOST ?? "127.0.0.1");
+  await app.listen(config.port, config.host);
   if (config.docsEnabled) console.log(`API docs: http://localhost:${config.port}/${DOCS_PATH}`);
 }
 

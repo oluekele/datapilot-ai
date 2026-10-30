@@ -38,7 +38,11 @@ export function loadConfig() {
     get publicWebUrl(): string {
       return process.env.PUBLIC_WEB_URL ?? this.webOrigins[0];
     },
-    port: int("API_PORT", 4000),
+    // Hosting platforms (Render, Railway, ...) provide PORT; API_PORT wins locally.
+    port: int("API_PORT", int("PORT", 4000)),
+    // Locally only this machine may connect; in production the platform's
+    // router must reach the process, so listen on all interfaces.
+    host: process.env.API_HOST ?? (production ? "0.0.0.0" : "127.0.0.1"),
     // Swagger UI at /api/docs: on in development, opt-in for production.
     docsEnabled: process.env.API_DOCS ? process.env.API_DOCS === "true" : !production,
     session: {
