@@ -21,7 +21,7 @@ export default function AdminOverviewPage() {
       {data && (
         <>
           <div className="stat-grid">
-            <StatCard label="USERS" value={formatNumber(data.users.total)} sub={`${formatNumber(data.users.active)} active · ${formatNumber(data.users.pendingEmail)} pending email · ${formatNumber(data.users.suspended)} suspended`} />
+            <StatCard label="USERS" value={formatNumber(data.users.total)} sub={`${formatNumber(data.users.active)} active · ${formatNumber(data.users.suspended)} suspended`} />
             <StatCard label="ORGANISATIONS" value={formatNumber(data.organizations.total)} sub={`${formatNumber(data.organizations.suspended)} suspended`} />
             <StatCard label="SUBSCRIPTIONS" value={formatNumber(data.subscriptions.active)} sub={`${formatNumber(data.subscriptions.pastDue)} past due · ${formatNumber(data.subscriptions.canceled)} canceled`} />
             <StatCard label="TRIALS" value={formatNumber(data.trials.active)} sub={`${formatNumber(data.trials.consumed)} consumed all-time`} />

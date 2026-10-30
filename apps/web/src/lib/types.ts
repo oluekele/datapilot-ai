@@ -205,7 +205,6 @@ export type BillingInfo = { entitlement: Entitlement | null; paymentsEnabled: bo
 
 // Generic responses
 export type MessageResponse = { message: string };
-export type RegisterResponse = { message: string; devVerificationUrl?: string };
 export type ForgotPasswordResponse = { message: string; devResetUrl?: string };
 export type OkResponse = { ok: boolean };
 
