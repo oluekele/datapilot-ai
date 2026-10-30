@@ -5,6 +5,26 @@ import { createSmtpTransport, smtpFromEnv } from "../src/mail/smtp-config";
 async function main(): Promise<void> {
   const to = process.argv[2];
   if (!to) throw new Error("Pass the address to send the test email to.");
+  const brevoApiKey = process.env.BREVO_API_KEY?.trim();
+  if (brevoApiKey) {
+    const from = process.env.MAIL_FROM ?? "no-reply@localhost";
+    console.log(`Sending via Brevo API as ${from}...`);
+    const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+      method: "POST",
+      headers: { "api-key": brevoApiKey, "content-type": "application/json", accept: "application/json" },
+      body: JSON.stringify({
+        sender: { email: /<([^>]+)>/.exec(from)?.[1] ?? from, name: "DataPilot" },
+        to: [{ email: to }],
+        subject: "DataPilot test email",
+        textContent: "If you can read this, DataPilot can send verification emails.",
+      }),
+    });
+    const body = await response.text();
+    if (!response.ok) throw new Error(`Brevo responded ${response.status}: ${body}`);
+    console.log(`Sent to ${to}. Brevo reply: ${body}`);
+    console.log("Check the inbox and the spam folder.");
+    return;
+  }
   const smtp = smtpFromEnv();
   if (!smtp) throw new Error("No SMTP settings found. Set SMTP_HOST/SMTP_PORT/SMTP_USER/SMTP_PASS in .env.");
   const from = process.env.MAIL_FROM ?? smtp.user ?? "no-reply@localhost";

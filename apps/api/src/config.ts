@@ -25,8 +25,9 @@ export function loadConfig() {
     throw new Error("STORAGE_ENCRYPTION_KEY must be 32 bytes, base64-encoded");
   }
   const smtp = smtpFromEnv();
-  if (production && !smtp) {
-    throw new Error("SMTP_HOST (or SMTP_URL) is required in production (email verification)");
+  const brevoApiKey = process.env.BREVO_API_KEY?.trim() || null;
+  if (production && !smtp && !brevoApiKey) {
+    throw new Error("BREVO_API_KEY or SMTP_HOST (or SMTP_URL) is required in production (email verification)");
   }
 
   return {
@@ -57,10 +58,13 @@ export function loadConfig() {
     lockout: { maxFailures: 5, minutes: 15 },
     mail: {
       smtp,
+      // HTTPS email API; used instead of SMTP when set. Hosts such as Render's
+      // free plan block outbound SMTP ports.
+      brevoApiKey,
       from: process.env.MAIL_FROM ?? "DataPilot <no-reply@localhost>",
       // Return verification/reset links in API responses so local
       // development works without an SMTP server. Never in production.
-      exposeDevLinks: !production && !smtp,
+      exposeDevLinks: !production && !smtp && !brevoApiKey,
     },
     storage: {
       dir: resolve(repoRoot, process.env.STORAGE_DIR ?? "./storage"),
