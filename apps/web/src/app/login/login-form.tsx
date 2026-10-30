@@ -7,7 +7,6 @@ import { AuthCard } from "@/components/auth-card";
 import { Button, ButtonLink, Field, Notice } from "@/components/ui";
 import { ApiError, apiPost, safeNextPath } from "@/lib/api";
 import type { Me } from "@/lib/types";
-import { ResendVerification } from "../verify-email/verify-email";
 
 export function LoginForm({ next }: { next: string | null }) {
   const router = useRouter();
@@ -64,20 +63,12 @@ export function LoginForm({ next }: { next: string | null }) {
         {error && <LoginError error={error} />}
         <Button type="submit" loading={submitting}>Sign in <span aria-hidden="true">→</span></Button>
       </form>
-      {error?.code === "EMAIL_NOT_VERIFIED" && (
-        <div className="subsection">
-          <div className="eyebrow">NEED A NEW LINK?</div>
-          <ResendVerification initialEmail={email} />
-        </div>
-      )}
     </AuthCard>
   );
 }
 
 function LoginError({ error }: { error: ApiError }) {
   switch (error.code) {
-    case "EMAIL_NOT_VERIFIED":
-      return <Notice tone="warn" title="Please verify your email first">{error.message} Check your inbox, or send a new link below.</Notice>;
     case "ACCOUNT_LOCKED":
       return <Notice tone="bad" title="Too many sign-in attempts">{error.message} For your security the account is temporarily locked — please wait a while and try again, or reset your password.</Notice>;
     case "ACCOUNT_SUSPENDED":

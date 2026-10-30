@@ -127,7 +127,7 @@ export function BillingView({ reference }: { reference: string | null }) {
           <Notice tone="info" title="Online payment is not configured">Contact DataPilot support to arrange a subscription by bank transfer or invoice.</Notice>
         )}
         {!canManage && <p className="muted small">Only owners and admins can change the subscription.</p>}
-        <p className="muted small">Every new account gets one free trial when its email is verified — one per person and per business, so it can&apos;t be restarted.</p>
+        <p className="muted small">Every new account gets one free trial at sign-up — one per person and per business, so it can&apos;t be restarted.</p>
         <ErrorNotice error={plans.error} title="Couldn't load plans" />
         {plans.data && (
           <div className="plan-grid">

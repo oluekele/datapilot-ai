@@ -55,7 +55,6 @@ export default function AdminUsersPage() {
               <tr>
                 <th scope="col">User</th>
                 <th scope="col">Status</th>
-                <th scope="col">Verified</th>
                 <th scope="col">Organisations</th>
                 <th scope="col">Trial used</th>
                 <th scope="col">Last sign-in</th>
@@ -70,7 +69,6 @@ export default function AdminUsersPage() {
                     <div className="muted small">{user.email} · joined {formatDate(user.createdAt)}</div>
                   </td>
                   <td><StatusBadge status={user.status} /></td>
-                  <td>{user.emailVerifiedAt ? formatDate(user.emailVerifiedAt) : <Badge tone="warn">no</Badge>}</td>
                   <td>{user.organizations.length === 0 ? "—" : user.organizations.map((o) => <div key={o.id} className="small">{o.name} <span className="muted">· {o.role.toLowerCase()}</span></div>)}</td>
                   <td>{user.trialUsed ? <Badge>yes</Badge> : <span className="muted small">no</span>}</td>
                   <td className="nowrap">{user.lastLoginAt ? formatRelative(user.lastLoginAt) : "never"}</td>

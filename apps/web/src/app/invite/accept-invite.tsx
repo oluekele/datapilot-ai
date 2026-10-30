@@ -49,7 +49,7 @@ export function AcceptInvite({ token }: { token: string | null }) {
 
   if (state.kind === "signed-out") {
     return (
-      <AuthCard eyebrow="YOU'RE INVITED" title="Join your team on" emphasis="DataPilot." intro="Sign in with the email address the invitation was sent to. New to DataPilot? Create an account with that email, verify it, then open this link again.">
+      <AuthCard eyebrow="YOU'RE INVITED" title="Join your team on" emphasis="DataPilot." intro="Sign in with the email address the invitation was sent to. New to DataPilot? Create an account with that email, then open this link again.">
         <div className="button-row">
           <ButtonLink href={loginUrlFor(here)}>Sign in to accept <span aria-hidden="true">→</span></ButtonLink>
           <ButtonLink href="/register" variant="light">Create an account</ButtonLink>

@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useState, type FormEvent } from "react";
-import { AuthCard, DevLink } from "@/components/auth-card";
+import { AuthCard } from "@/components/auth-card";
 import { Button, ErrorNotice, Field } from "@/components/ui";
 import { apiPost } from "@/lib/api";
-import type { RegisterResponse } from "@/lib/types";
+import type { Me } from "@/lib/types";
 
 type AccountType = "INDIVIDUAL" | "TEAM";
 const MIN_PASSWORD = 10;
 
 export function RegisterForm() {
+  const router = useRouter();
   const [accountType, setAccountType] = useState<AccountType>("INDIVIDUAL");
   const [organizationName, setOrganizationName] = useState("");
   const [displayName, setDisplayName] = useState("");
@@ -18,7 +20,6 @@ export function RegisterForm() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<unknown>(null);
-  const [done, setDone] = useState<RegisterResponse | null>(null);
 
   const passwordShort = password.length > 0 && password.length < MIN_PASSWORD;
 
@@ -28,30 +29,19 @@ export function RegisterForm() {
     setSubmitting(true);
     setError(null);
     try {
-      const result = await apiPost<RegisterResponse>("/auth/register", {
+      // Registration signs the user in, so go straight to the workspace.
+      await apiPost<Me>("/auth/register", {
         accountType,
         displayName: displayName.trim(),
         email: email.trim(),
         password,
         ...(accountType === "TEAM" ? { organizationName: organizationName.trim() } : {}),
       });
-      setDone(result);
+      router.replace("/app");
     } catch (err) {
       setError(err);
-    } finally {
       setSubmitting(false);
     }
-  }
-
-  if (done) {
-    return (
-      <AuthCard eyebrow="ALMOST THERE" title="Check your" emphasis="inbox." intro={<>We sent a verification link to <b>{email}</b>. Open it to activate your account, then sign in.</>}
-        footer={<>Didn&apos;t get it? <Link href="/verify-email">Resend the verification email</Link></>}>
-        <p className="muted small">{done.message}</p>
-        {done.devVerificationUrl && <DevLink href={done.devVerificationUrl} label="Verify your email here" />}
-        <Link className="button button-light" href="/login">Go to sign in</Link>
-      </AuthCard>
-    );
   }
 
   return (
@@ -59,7 +49,7 @@ export function RegisterForm() {
       eyebrow="CREATE YOUR ACCOUNT"
       title="Start with"
       emphasis="cleaner data."
-      intro="Set up a private workspace. Your free trial starts as soon as you verify your email — no card required."
+      intro="Set up a private workspace. Your free trial starts as soon as you sign up — no card required."
       footer={<>Already have an account? <Link href="/login">Sign in</Link></>}
     >
       <form className="form-stack" onSubmit={(event) => void submit(event)} noValidate={false}>
