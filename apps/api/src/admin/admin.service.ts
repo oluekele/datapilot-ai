@@ -277,7 +277,7 @@ export class AdminService {
     if (user.platformRole === "SUPER_ADMIN" && suspend) {
       throw new AppError(403, "FORBIDDEN", "Demote a platform administrator before suspending them.");
     }
-    const status = suspend ? "SUSPENDED" : user.emailVerifiedAt ? "ACTIVE" : "PENDING_EMAIL";
+    const status = suspend ? "SUSPENDED" : "ACTIVE";
     await this.prisma.$transaction(async (tx) => {
       await tx.user.update({ where: { id }, data: { status } });
       await this.audit.record(

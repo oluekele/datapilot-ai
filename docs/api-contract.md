@@ -12,7 +12,7 @@ origin and the session cookie is first-party.
   the `Origin` header (if present) must match `WEB_ORIGIN`. Use
   `credentials: "same-origin"`.
 - Errors: `{ statusCode, code?, message }`. `message` is safe to show. Notable
-  `code`s: `UNAUTHENTICATED` (401), `EMAIL_NOT_VERIFIED` (403),
+  `code`s: `UNAUTHENTICATED` (401), `CONFLICT` (409),
   `ACCOUNT_LOCKED` (429), `ACCOUNT_SUSPENDED` (403), `ORG_SUSPENDED` (403),
   `SUBSCRIPTION_REQUIRED` (402), `PLAN_LIMIT` (402), `FORBIDDEN_ROLE` (403),
   `STEP_UP_REQUIRED` (403), `TRIAL_ALREADY_USED` (409), `NOT_FOUND` (404).
@@ -84,9 +84,7 @@ type RepairResult = {
 
 | Method | Path | Body | Response |
 |---|---|---|---|
-| POST | `/auth/register` | `{ accountType: "INDIVIDUAL"\|"TEAM", displayName, email, password (min 10), organizationName? (required for TEAM) }` | `201 { message, devVerificationUrl? }` (no login until verified) |
-| POST | `/auth/verify-email` | `{ token }` | `{ message }` — also starts the account's one-time free trial |
-| POST | `/auth/resend-verification` | `{ email }` | `{ message, devVerificationUrl? }` |
+| POST | `/auth/register` | `{ accountType: "INDIVIDUAL"\|"TEAM", displayName, email, password (min 10), organizationName? (required for TEAM) }` | `201` same body as `/auth/me`; sets the session cookie and starts the account's one-time free trial. `409 CONFLICT` if the email already has an account. There is no email verification. |
 | POST | `/auth/login` | `{ email, password }` | `Me` + cookie |
 | POST | `/auth/logout` | – | `{ ok: true }` |
 | POST | `/auth/forgot-password` | `{ email }` | `{ message, devResetUrl? }` |
@@ -134,7 +132,7 @@ never held hostage). Uploading and processing require `entitlement.active`.
 | Method | Path | Roles | Body / Response |
 |---|---|---|---|
 | GET | `/billing/plans` | public | `[{ code, name, description, priceMinor, currency, interval, limits }]` |
-| GET | `/billing/trial` | public | `{ days, automatic, limits }` — the free trial every new account gets on email verification |
+| GET | `/billing/trial` | public | `{ days, automatic, limits }` — the free trial every new account gets at sign-up |
 | GET | `/billing` | any member | `{ entitlement, paymentsEnabled, payments: [{ id, reference, amountMinor, currency, status, paidAt, createdAt, planName }] }` |
 | POST | `/billing/checkout` | OWNER, ADMIN | `{ planCode }` → `{ authorizationUrl, reference }` (redirect the browser) |
 | POST | `/billing/verify` | any member | `{ reference }` → `{ status }` (call on return to `/app/billing?reference=…`) |
@@ -157,7 +155,7 @@ mutation writes an audit event.
 | POST | `/admin/organizations/:id/trial/end` | `{ reason }` (the trial stays consumed) |
 | POST | `/admin/organizations/:id/subscription` | `{ planCode, months (1–24), reason }` — manual activation (e.g. bank transfer) |
 | POST | `/admin/organizations/:id/subscription/cancel` | `{ reason }` |
-| GET | `/admin/users?q=` | `[{ id, email, displayName, status, platformRole, emailVerifiedAt, lastLoginAt, createdAt, organizations: [{ id, name, role }], trialUsed }]` |
+| GET | `/admin/users?q=` | `[{ id, email, displayName, status, platformRole, emailVerifiedAt (legacy, unused), lastLoginAt, createdAt, organizations: [{ id, name, role }], trialUsed }]` |
 | POST | `/admin/users/:id/suspend` · `/reactivate` | `{ reason }` (suspending revokes sessions) |
 | GET | `/admin/jobs?status=` | `Job[]` with `organizationName`, `datasetName` |
 | GET | `/admin/audit?action=&organizationId=` | `AuditEvent[]` |

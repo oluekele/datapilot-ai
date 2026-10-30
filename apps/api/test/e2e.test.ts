@@ -65,8 +65,7 @@ async function signUp(tag: string, accountType: "INDIVIDUAL" | "TEAM" = "TEAM") 
     organizationName: `${tag} Ltd`,
   });
   assert.equal(reg.status, 201, JSON.stringify(reg.body));
-  const token = new URL(reg.body.devVerificationUrl).searchParams.get("token");
-  assert.equal((await c.post("/auth/verify-email", { token })).status, 200);
+  assert.equal(reg.body.user.email, address);
   const login = await c.post("/auth/login", { email: address, password: PASSWORD });
   assert.equal(login.status, 200, JSON.stringify(login.body));
   return { c, email: address, me: login.body };
@@ -99,15 +98,13 @@ describe("DataPilot API", () => {
   });
   after(() => prisma.$disconnect());
 
-  test("unverified users cannot sign in, and registration does not reveal existing emails", async () => {
+  test("registration signs the user in, and an email can only register once", async () => {
     const c = new Client();
-    const address = email("pending");
-    const body = { accountType: "INDIVIDUAL", displayName: "Pending", email: address, password: PASSWORD };
-    const first = await c.post("/auth/register", body);
-    const again = await c.post("/auth/register", body);
-    assert.equal(first.body.message, again.body.message);
-    const login = await c.post("/auth/login", { email: address, password: PASSWORD });
-    assert.equal(login.body.code, "EMAIL_NOT_VERIFIED");
+    const body = { accountType: "INDIVIDUAL", displayName: "Newcomer", email: email("new"), password: PASSWORD };
+    assert.equal((await c.post("/auth/register", body)).status, 201);
+    assert.equal((await c.get("/auth/me")).status, 200);
+    const again = await new Client().post("/auth/register", body);
+    assert.equal(again.status, 409);
   });
 
   test("CSRF: state-changing requests need the custom header and a trusted origin", async () => {
@@ -117,7 +114,7 @@ describe("DataPilot API", () => {
     assert.equal(evil.status, 403);
   });
 
-  test("new accounts start a one-time free trial when they verify their email", async () => {
+  test("new accounts start a one-time free trial at sign-up", async () => {
     assert.equal(owner.me.entitlement.active, true);
     assert.equal(owner.me.entitlement.reason, "TRIAL");
     assert.equal(owner.me.entitlement.trial.active, true);

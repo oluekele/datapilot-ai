@@ -26,9 +26,6 @@ export function loadConfig() {
   }
   const smtp = smtpFromEnv();
   const brevoApiKey = process.env.BREVO_API_KEY?.trim() || null;
-  if (production && !smtp && !brevoApiKey) {
-    throw new Error("BREVO_API_KEY or SMTP_HOST (or SMTP_URL) is required in production (email verification)");
-  }
 
   return {
     production,
@@ -62,8 +59,8 @@ export function loadConfig() {
       // free plan block outbound SMTP ports.
       brevoApiKey,
       from: process.env.MAIL_FROM ?? "DataPilot <no-reply@localhost>",
-      // Return verification/reset links in API responses so local
-      // development works without an SMTP server. Never in production.
+      // Return password-reset/invitation links in API responses so local
+      // development works without a mail provider. Never in production.
       exposeDevLinks: !production && !smtp && !brevoApiKey,
     },
     storage: {
@@ -85,8 +82,8 @@ export function loadConfig() {
       paystackSecretKey: process.env.PAYSTACK_SECRET_KEY || null,
       graceDays: int("BILLING_GRACE_DAYS", 3),
     },
-    // Every new account gets this many free-trial days when its email is
-    // verified (one-time per user and per organisation). 0 disables it.
+    // Every new account gets this many free-trial days at sign-up
+    // (one-time per user and per organisation). 0 disables it.
     autoTrialDays: int("TRIAL_DAYS", 14),
     trialLimits: {
       maxDatasets: 5,

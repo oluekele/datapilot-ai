@@ -14,8 +14,8 @@ The current Streamlit application remains available during the migration. New Sa
 
 See [api-contract.md](api-contract.md) for every endpoint and payload.
 
-- **Identity:** registration as an individual or an organisation, email
-  verification, Argon2id passwords, login lockout after 5 failures, password
+- **Identity:** registration as an individual or an organisation
+  (signs the user in immediately; no email verification), Argon2id passwords, login lockout after 5 failures, password
   reset (revokes all sessions), opaque server-side sessions in an HttpOnly
   cookie, CSRF protection (custom header + Origin allow-list), strict rate
   limits on credential endpoints.
@@ -24,7 +24,7 @@ See [api-contract.md](api-contract.md) for every endpoint and payload.
   session's active membership, re-checked on each request.
 - **Commercial rules** (`EntitlementsService` is the single source of truth):
   - Every new account (individual or organisation) starts a free trial
-    (`TRIAL_DAYS`, default 14; 0 disables) when its email is verified. After
+    (`TRIAL_DAYS`, default 14; 0 disables) at sign-up. After
     that, uploading and processing need a subscription.
   - The trial is **one-time per organisation and per owner**: ending it early
     does not make it available again, and an owner cannot get a second trial by
@@ -80,7 +80,7 @@ See [api-contract.md](api-contract.md) for every endpoint and payload.
 1. Every authenticated API request is authorized against the active organisation membership. A browser-supplied organisation ID is never proof of access.
 2. Every dataset, version, job, and report query is scoped to the authorised organisation. Never accept a raw storage key from a client for download.
 3. The raw upload is immutable. A repair creates a new version linked to its parent and records the repair plan and checksum.
-4. Trials start automatically on email verification (or by super-admin grant) and are recorded once for both the organisation and its owner using unique database constraints. Rows are never deleted, so a trial can never be restarted.
+4. Trials start automatically at sign-up (or by super-admin grant) and are recorded once for both the organisation and its owner using unique database constraints. Rows are never deleted, so a trial can never be restarted.
 5. Subscription entitlements are checked in the API for every paid operation. Webhook event IDs are persisted uniquely before state changes are applied.
 6. Passwords use Argon2id; sessions are random opaque tokens stored hashed, with idle and absolute expiry, and are revocable instantly. Cookies are HttpOnly, Secure in production, SameSite, and protected against CSRF where cross-site flows require it.
 7. Super-admin actions require a platform role, step-up authentication, reason capture, and an append-only audit event.
@@ -89,7 +89,7 @@ See [api-contract.md](api-contract.md) for every endpoint and payload.
 ## Staged delivery
 
 1. ✅ **Foundation:** monorepo, Postgres/Prisma schema, web shell, health checks.
-2. ✅ **Identity and organisations:** email verification, login/session lifecycle, organisation creation/invites, role checks, onboarding after registration.
+2. ✅ **Identity and organisations:** registration, login/session lifecycle, organisation creation/invites, role checks, onboarding after registration.
 3. ✅ (local encrypted storage) **Private data lifecycle:** object storage, signed upload/download flows, immutable raw/repaired versions, retention/deletion, scoped history.
 4. ✅ **Processing:** job queue, Python worker adapter, result persistence, retries/idempotency, usage metering.
 5. ✅ (needs live Paystack testing) **Commercial access:** plans and API entitlements, one-time trial claims, auditable admin exceptions, chosen payment gateway and webhook verification.

@@ -2,7 +2,6 @@ import { HttpException } from "@nestjs/common";
 
 export type ErrorCode =
   | "UNAUTHENTICATED"
-  | "EMAIL_NOT_VERIFIED"
   | "ACCOUNT_LOCKED"
   | "ACCOUNT_SUSPENDED"
   | "ORG_SUSPENDED"

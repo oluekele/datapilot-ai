@@ -1,5 +1,5 @@
 import { Inject, Injectable } from "@nestjs/common";
-import type { Prisma, Session, User } from "@prisma/client";
+import type { Prisma, Session } from "@prisma/client";
 import * as argon2 from "argon2";
 import type { Request, Response } from "express";
 import { AuditService } from "../common/audit.service";
@@ -33,24 +33,20 @@ export class AuthService {
     @Inject(APP_CONFIG) private readonly config: AppConfig,
   ) {}
 
-  async register(dto: RegisterDto, req: Request) {
-    const message = "Check your email for a link to verify your account.";
+  /**
+   * Creates the account and its workspace, starts the free trial and signs the
+   * user in. There is no email verification step.
+   */
+  async register(dto: RegisterDto, req: Request, res: Response) {
     const existing = await this.prisma.user.findUnique({ where: { email: dto.email } });
     if (existing) {
-      // Same response as success: registration must not reveal existing accounts.
-      if (existing.status === "PENDING_EMAIL") return this.sendVerification(existing, message);
-      await this.mail.send(
-        existing.email,
-        "Someone tried to register with your email",
-        "An account already exists for this address. If this was you, sign in or reset your password.",
-      );
-      return { message };
+      throw new AppError(409, "CONFLICT", "An account with this email already exists. Sign in instead.");
     }
 
     const passwordHash = await argon2.hash(dto.password, ARGON_OPTIONS);
     const user = await this.prisma.$transaction(async (tx) => {
       const user = await tx.user.create({
-        data: { email: dto.email, passwordHash, displayName: dto.displayName },
+        data: { email: dto.email, passwordHash, displayName: dto.displayName, status: "ACTIVE" },
       });
       const orgName =
         dto.accountType === "TEAM" ? dto.organizationName! : `${dto.displayName}'s workspace`;
@@ -75,78 +71,16 @@ export class AuthService {
         },
         tx,
       );
+      await this.startSignupTrial(tx, user.id, req);
       return user;
     });
-    return this.sendVerification(user, message);
-  }
-
-  private async sendVerification(user: User, message: string) {
-    const token = randomToken();
-    await this.prisma.emailVerificationToken.create({
-      data: { userId: user.id, tokenHash: sha256(token), expiresAt: new Date(Date.now() + 24 * HOUR_MS) },
-    });
-    const url = this.mail.link(`/verify-email?token=${token}`);
-    await this.mail.send(
-      user.email,
-      "Verify your DataPilot account",
-      `Welcome to DataPilot, ${user.displayName}.\n\nVerify your email address (link valid for 24 hours):\n${url}\n`,
-    );
-    return this.config.mail.exposeDevLinks ? { message, devVerificationUrl: url } : { message };
-  }
-
-  async resendVerification(email: string) {
-    const message = "If that account needs verification, we've sent a new link.";
-    const user = await this.prisma.user.findUnique({ where: { email } });
-    if (!user || user.status !== "PENDING_EMAIL") return { message };
-    const recent = await this.prisma.emailVerificationToken.count({
-      where: { userId: user.id, createdAt: { gt: new Date(Date.now() - HOUR_MS) } },
-    });
-    if (recent >= 5) return { message };
-    return this.sendVerification(user, message);
-  }
-
-  async verifyEmail(token: string, req: Request) {
-    const now = new Date();
-    const record = await this.prisma.emailVerificationToken.findUnique({
-      where: { tokenHash: sha256(token) },
-      include: { user: true },
-    });
-    if (!record || record.consumedAt || record.expiresAt <= now) {
-      throw new AppError(400, "INVALID_TOKEN", "This verification link is invalid or has expired.");
-    }
-    let trialDays = 0;
-    await this.prisma.$transaction(async (tx) => {
-      const claimed = await tx.emailVerificationToken.updateMany({
-        where: { id: record.id, consumedAt: null },
-        data: { consumedAt: now },
-      });
-      if (claimed.count !== 1) {
-        throw new AppError(400, "INVALID_TOKEN", "This verification link has already been used.");
-      }
-      await tx.user.update({
-        where: { id: record.userId },
-        // A suspended user stays suspended.
-        data: {
-          emailVerifiedAt: record.user.emailVerifiedAt ?? now,
-          ...(record.user.status === "PENDING_EMAIL" ? { status: "ACTIVE" as const } : {}),
-        },
-      });
-      await this.audit.record(
-        { action: "user.email_verified", actorUserId: record.userId, subjectType: "user", subjectId: record.userId, req },
-        tx,
-      );
-      if (!record.user.emailVerifiedAt) trialDays = await this.startSignupTrial(tx, record.userId, req);
-    });
-    return {
-      message: trialDays
-        ? `Your email is verified and your ${trialDays}-day free trial has started. You can now sign in.`
-        : "Your email is verified. You can now sign in.",
-    };
+    const session = await this.sessions.create(user, req, res);
+    await this.audit.record({ action: "auth.login", actorUserId: user.id, req });
+    return this.me(user.id, session);
   }
 
   /**
-   * Every new account starts with a free trial once its email is verified, so
-   * the clock runs only while the account is usable. One-time per user and per
+   * Every new account starts with a free trial. One-time per user and per
    * organisation: an owner who already had a trial gets none.
    */
   private async startSignupTrial(tx: Prisma.TransactionClient, userId: string, req: Request): Promise<number> {
@@ -204,7 +138,12 @@ export class AuthService {
       throw new AppError(401, "UNAUTHENTICATED", "Incorrect email or password.");
     }
     if (user.status === "PENDING_EMAIL") {
-      throw new AppError(403, "EMAIL_NOT_VERIFIED", "Verify your email address before signing in.");
+      // Signed up while email verification existed: activate and start the
+      // trial they would have received on verification.
+      await this.prisma.$transaction(async (tx) => {
+        await tx.user.update({ where: { id: user.id }, data: { status: "ACTIVE" } });
+        await this.startSignupTrial(tx, user.id, req);
+      });
     }
     if (user.status === "SUSPENDED") {
       throw new AppError(403, "ACCOUNT_SUSPENDED", "This account is suspended. Contact DataPilot support.");

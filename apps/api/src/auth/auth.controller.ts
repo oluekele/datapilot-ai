@@ -10,7 +10,6 @@ import {
   RegisterDto,
   ResetPasswordDto,
   SwitchOrganizationDto,
-  TokenDto,
 } from "./auth.dto";
 import { AuthService } from "./auth.service";
 
@@ -26,24 +25,8 @@ export class AuthController {
   @Public()
   @Throttle(STRICT)
   @Post("register")
-  register(@Body() dto: RegisterDto, @Req() req: Request) {
-    return this.auth.register(dto, req);
-  }
-
-  @Public()
-  @Throttle(STRICT)
-  @HttpCode(200)
-  @Post("verify-email")
-  verifyEmail(@Body() dto: TokenDto, @Req() req: Request) {
-    return this.auth.verifyEmail(dto.token, req);
-  }
-
-  @Public()
-  @Throttle(STRICT)
-  @HttpCode(200)
-  @Post("resend-verification")
-  resend(@Body() dto: EmailDto) {
-    return this.auth.resendVerification(dto.email);
+  register(@Body() dto: RegisterDto, @Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    return this.auth.register(dto, req, res);
   }
 
   @Public()
